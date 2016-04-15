@@ -13,18 +13,23 @@
             <h1>Scrum Board</h1>
         </hgroup>
     </header>
-    <nav>nav</nav>
+    <nav>
+        nav
+        <input type="button" name="testBtn" id="testBtn" value="test" />
+    </nav>
     <div role="main" class="flexbox">
         <div id="backlog">
-            <form name="backlogForm" method="post">
+            <form name="backlogForm" id="backlogForm">
                 <label for="title">Issue</label>
                 <input id="title" name="title" type="text" required />
+                <br />
                 <label for="description">Description</label>
                 <input id="description" name="description" type="text" required />
+                <br />
                 <label for="points">Points</label>
                 <input id="points" name="points" type="number" min="0" max="50" required />
                 <br />
-                <input type="button" name="btnSubmit" value="Add issue" />
+                <input type="button" id="btnSubmit" name="btnSubmit" value="Add issue" />
             </form>
         </div>
         <div id="scrumBoard">

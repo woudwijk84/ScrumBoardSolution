@@ -11,11 +11,13 @@ $(document).ready(function () {
     var $columns = 4;
     var $destination;
     var $draggedIssue;
+    var $issueCount = 0;
 
     scrum.initialize = function () {
+        console.log('init');
         $('#btnSubmit').on('click', scrum.addIssueToBoard);
-        mockIssue();
-        dragEvents();
+        //mockIssue();
+        //dragEvents();
     }
 
     function mockIssue() {
@@ -43,7 +45,7 @@ $(document).ready(function () {
 
     function dragEnter(e) {
         preventDefault(e);
-        console.log(e);
+        //console.log(e);
         $(e.target).addClass('issueDroppoint');
     }
 
@@ -64,7 +66,8 @@ $(document).ready(function () {
             $draggedIssue.detach();
             $draggedIssue.appendTo(col);
         }
-
+        var droppableId = $(this).attr("id");
+        console.log(droppableId);
         col.removeClass('issueDroppoint');
     }
 
@@ -76,7 +79,20 @@ $(document).ready(function () {
     }
 
     scrum.addIssueToBoard = function () {
-
-    }
+        console.log('clicking');
+       
+        var title =  $('#title').val().charAt(0) ? $('#title').val() : '';
+        var description = $("#description").val().charAt(0) ? $('#description').val() : '';
+        var points = $("#points").val().charAt(0) ? $('#points').val() : '';
+        console.log('adding');
+        if (title !== '' && description !== '' && points !== '') {
+            //var newIssue = new Issue(title, description, points, 'backlog');
+            var html = '<div id="issue"'+$issueCount+' class="issue" draggable="true"><h5>' + title +
+                '</h5><p>' + description + '<br /><b>' + points + ' points</b></p></div>';
+            $('#backlogCol').append(html);
+            $issueCount++;
+            dragEvents();
+        }
+    };
 
 })();

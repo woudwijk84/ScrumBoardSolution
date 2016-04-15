@@ -8,7 +8,7 @@ body {
 }
 
 div[role=main] {
-    background-color: aquamarine;
+    /*background-color: aquamarine;*/
     display: inline-block;
     width: 100%;
     padding: 10px;
@@ -25,12 +25,15 @@ div[role=main] {
 }
 
 .flexbox #backlog {
-    width: 200px;
-    background-color: aqua;
+    width: 250px;
+    background-color: #cdcbcb;
+    border: 1px solid #808080;
 }
 
 .flexbox #scrumBoard {
-    background-color: azure;
+    background-color: #cdcbcb;
+    border: 1px solid #808080;
+    margin-top: 20px;
     display: flex;
     width: 100%;
     -ms-flex-direction: row;
@@ -43,6 +46,9 @@ div[role=main] {
 }
 
     .flexbox #scrumBoard > div {
+        border: 1px solid #909090;
+        background-color: #a6a6a6;
+        padding: 5px; 
         min-width: 200px;
         -ms-flex: 3 0 auto;
         -webkit-flex: 3 0 auto;
@@ -53,8 +59,25 @@ div[role=main] {
     margin: 5px;
     padding: 5px;
     border: 1px solid #808080;
+    background-color: #e4e4e4
 }
 
-.issueDroppoint{
+.issueDroppoint {
     border: 1px dotted #565555;
 }
+
+.scrumCol h4 {
+    text-align: center;
+}
+
+#backlogForm {
+    padding: 5px;
+}
+
+    #backlogForm label {
+        float: left;
+    }
+
+    #backlogForm input {
+        float: right;
+    }
