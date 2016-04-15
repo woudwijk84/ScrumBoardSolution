@@ -1,6 +1,5 @@
 ﻿/// <reference path="jquery-2.2.3.js" />
 
-
 $(document).ready(function () {
     scrumNS.initialize();
 });
@@ -17,12 +16,15 @@ $(document).ready(function () {
         console.log('init');
         $('#btnSubmit').on('click', scrum.addIssueToBoard);
         //mockIssue();
-        //dragEvents();
     }
+
+    // #region Drag & drop
+
 
     function mockIssue() {
         var mock = '<div id="mockIssue" class="issue" draggable="true"><h5>MOCK</h5>test</div>';
         $('#backlogCol').append(mock);
+        //dragEvents();
     }
 
     function dragEvents() {
@@ -45,19 +47,16 @@ $(document).ready(function () {
 
     function dragEnter(e) {
         preventDefault(e);
-        //console.log(e);
         $(e.target).addClass('issueDroppoint');
     }
 
     function dragLeave(e) {
         preventDefault(e);
         $(e.target).removeClass('issueDroppoint');
-
     }
 
     function preventDefault(e) {
         e.preventDefault();
-
     }
 
     function dropIssue(e) {
@@ -67,9 +66,20 @@ $(document).ready(function () {
             $draggedIssue.appendTo(col);
         }
         var droppableId = $(this).attr("id");
-        console.log(droppableId);
+        if (droppableId === 'backlogCol') {
+            $draggedIssue.status = 'todo';
+        } else if (droppableId === 'doingCol') {
+            $draggedIssue.status = 'doing';
+        } else if (droppableId === 'doneCol') {
+            $draggedIssue.status = 'done';
+        }
+        console.log($('#dragHistory'));
+        $('#dragHistory').append('Issue ' + $draggedIssue.title + ' moved to ' + $draggedIssue.status + '<br/>');
         col.removeClass('issueDroppoint');
     }
+
+
+    // #endregion
 
     function Issue(title, description, points, status) {
         $title = title;
@@ -79,19 +89,29 @@ $(document).ready(function () {
     }
 
     scrum.addIssueToBoard = function () {
-        console.log('clicking');
-       
-        var title =  $('#title').val().charAt(0) ? $('#title').val() : '';
+        var title = $('#title').val().charAt(0) ? $('#title').val() : '';
         var description = $("#description").val().charAt(0) ? $('#description').val() : '';
         var points = $("#points").val().charAt(0) ? $('#points').val() : '';
-        console.log('adding');
         if (title !== '' && description !== '' && points !== '') {
             //var newIssue = new Issue(title, description, points, 'backlog');
-            var html = '<div id="issue"'+$issueCount+' class="issue" draggable="true"><h5>' + title +
+            var html = '<div id="issue"' + $issueCount + ' class="issue" draggable="true"><h5>' + title +
                 '</h5><p>' + description + '<br /><b>' + points + ' points</b></p></div>';
             $('#backlogCol').append(html);
             $issueCount++;
             dragEvents();
+        } else {
+            var errorMsg = '';
+            console.log($('#title'));
+            if (title === '') {
+                errorMsg += '<span class="creationErr">Title is required </span><br />';
+            }
+            if (description === '') {
+                errorMsg += '<span class="creationErr">Description is required </span><br />';
+            }
+            if (points === '') {
+                errorMsg += '<span class="creationErr">Points is required </span><br />';
+            }
+            $('#dragHistory').append(errorMsg);
         }
     };
 
