@@ -1,2 +1,60 @@
-﻿body {
+﻿* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: block;
+}
+
+div[role=main] {
+    background-color: aquamarine;
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+}
+
+.dragging {
+    background-color: #565555;
+    -moz-transform: rotate(10);
+    -ms-transform: rotate(10);
+    -o-transform: rotate(10);
+    -webkit-transform: rotate(10);
+    transform: rotate(10);
+}
+
+.flexbox #backlog {
+    width: 200px;
+    background-color: aqua;
+}
+
+.flexbox #scrumBoard {
+    background-color: azure;
+    display: flex;
+    width: 100%;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-flow: row;
+    -webkit-flex-flow: row;
+    flex-flow: row;
+    justify-content: center;
+}
+
+    .flexbox #scrumBoard > div {
+        min-width: 200px;
+        -ms-flex: 3 0 auto;
+        -webkit-flex: 3 0 auto;
+        flex: 3 0 auto;
+    }
+
+.issue {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #808080;
+}
+
+.issueDroppoint{
+    border: 1px dotted #565555;
 }

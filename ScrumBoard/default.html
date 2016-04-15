@@ -4,7 +4,6 @@
     <title>Scrumming</title>
     <meta charset="utf-8" />
     <link href="Content/default.css" rel="stylesheet" />
-    <link href="Content/bootstrap.css" rel="stylesheet" />
     <script src="Scripts/jquery-2.2.3.js"></script>
     <script src="Scripts/default.js"></script>
 </head>
@@ -15,25 +14,23 @@
         </hgroup>
     </header>
     <nav>nav</nav>
-    <div role="main" class="row">
-        <div class="col-md-8">
-            <div id="backlog" class="col-md-2">
-                <form name="backlogForm" method="post">
-                    <label for="title">Issue</label>
-                    <input id="title" name="title" type="text" required />
-                    <label for="description">Description</label>
-                    <input id="description" name="description" type="text" required />
-                    <label for="points">Points</label>
-                    <input id="points" name="points" type="number" min="0" max="50" required />
-                    <input type="button" name="btnSubmit" value="Add issue" />
-                </form>
-            </div>
-
-            <div id="scrumBoard" class="col-md-8">
-                <div id="backlogCol" class="col-md-2"><h4>backlog</h4></div>
-                <div id="doingCol" class="col-md-2"><h4>Doing</h4></div>
-                <div id="doneCol" class="col-md-2"><h4>Done</h4></div>
-            </div>
+    <div role="main" class="flexbox">
+        <div id="backlog">
+            <form name="backlogForm" method="post">
+                <label for="title">Issue</label>
+                <input id="title" name="title" type="text" required />
+                <label for="description">Description</label>
+                <input id="description" name="description" type="text" required />
+                <label for="points">Points</label>
+                <input id="points" name="points" type="number" min="0" max="50" required />
+                <br />
+                <input type="button" name="btnSubmit" value="Add issue" />
+            </form>
+        </div>
+        <div id="scrumBoard">
+            <div id="backlogCol" class="scrumCol"><h4>backlog</h4></div>
+            <div id="doingCol" class="scrumCol"><h4>Doing</h4></div>
+            <div id="doneCol" class="scrumCol"><h4>Done</h4></div>
         </div>
     </div>
     <aside>aside</aside>
