@@ -20,8 +20,9 @@ $(document).ready(function () {
 
     scrum.initialize = function () {
         console.log('init');
-        $('#btnSubmit').on('click', scrum.addIssueToBoard);
+        $('#btnSubmit').on('click', scrum.saveIssue);
         initDB();
+        //scrum.getIssues();
         //mockIssue();
     }
 
@@ -123,28 +124,49 @@ $(document).ready(function () {
     };
 
     function printIsseus(issues) {
-        var html = '';
         for (var i = 0; i < issues.length; i++) {
+            var html = '';
+            var status = '';
             var key = issues[i].key;
             var issue = issues[i].issue;
-            html += '<div id="issue' + i + '" class="issue" draggable="true">'+
+            html += '<div id="issue' + i + '" class="issue" draggable="true">' +
                     '<h5>' + issue.title + '</h5> ' +
+                    '<a class="deleteIssue" href="javascript:void(0)" data-key=' + key + '>X</a>' +
                     '<p>' + issue.description + '<br /> ' +
                     '<b>' + issue.points + ' points</b></p></div>';
+            status = issue.status;
+            if (status === 'todo') {
+                $('#backlogCol').append(html);
+            } else if (status === 'doing') {
+                $('#doingCol').append(html);
+            } else if (status === 'doneCol') {
+                $('#doneCol').append(html);
+            }
         }
+        $('.deleteIssue').on('click', scrum.deleteIssue);
+        dragEvents();
+    }
+
+    scrum.deleteIssue = function (issue) {
+        console.log(issue);
     }
 
     // #region IndexedDB
 
     function initDB() {
-        var openRequest = $indexedDB.open("scrumIssues", 1);
+        var openRequest = indexedDB.open("scrumIssues", 1);
+
         openRequest.onupgradeneeded = function (response) {
-            response.currentTarget.transaction.objectStore("Issues", { keypath: 'id', autoIncrement: true });
+            response.currentTarget.result.createObjectStore("Issues",
+                {
+                    keypath: 'id',
+                    autoIncrement: true
+                });
         }
-        //var db;
 
         openRequest.onsuccess = function (response) {
             $db = openRequest.result;
+            scrum.getIssues();
         }
 
         openRequest.onerror = function (response) {
@@ -152,28 +174,47 @@ $(document).ready(function () {
         }
     }
 
-    function getRequest() {
-        var db = $db || initDB();
-        var transaction = db.transaction('Issues', 'readonly');
-        var request = transaction.objectStore('Issues');
-        return request;
-    }
+    //function getRequest() {
+    //    var db = $db || initDB();
+    //    var transaction = db.transaction('Issues', 'readwrite');
+    //    var request = transaction.objectStore('Issues');
+    //    return request;
+    //}
 
     scrum.getIssues = function () {
         $currentIssue = { key: null, issue: {} }
-        var request = getRequest();
-        var requestCursor = request.OpenCursor();
+        var transaction = $db.transaction('Issues', 'readonly');
+        var request = transaction.objectStore('Issues').openCursor();
         var issues = [];
 
-        requestCursor.onsuccess = function (response) {
+        request.onsuccess = function (response) {
             var cursor = response.target.result;
             if (!cursor) {
-                scrum.addIssueToBoard();
+
+                printIsseus(issues);
                 return;
             }
 
             issues.push({ key: cursor.key, issue: cursor.value });
             cursor.continue();
+        }
+    }
+
+    scrum.saveIssue = function () {
+        console.log('creating issue');
+        var issue = $currentIssue.issue;
+        issue.title = $('#title').val();
+        issue.description = $('#description').val();
+        issue.points = $('#points').val();
+        issue.status = 'todo';
+
+        //var issueObjStore = getRequest();
+        var transaction = $db.transaction('Issues', 'readwrite');
+        var issueObjStore = transaction.objectStore('Issues');
+        var request = $currentIssue.key != null ? issueObjStore.put(issue, $currentIssue.key) : issueObjStore.add(issue);
+
+        request.onsuccess = function (response) {
+            scrum.getIssues();
         }
     }
 

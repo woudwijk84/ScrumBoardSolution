@@ -11,7 +11,7 @@ body {
     transition: all 2s;
 }
 
-.creationErr{
+.creationErr {
     color: red;
 }
 
@@ -30,7 +30,6 @@ div[role=main] {
     -o-transform: scale(0.8);
     -webkit-transform: scale(0.8);
     transform: scale(0.8);
-
 }
 
 .flexbox #backlog {
@@ -59,7 +58,7 @@ div[role=main] {
     .flexbox #scrumBoard > div {
         border: 1px solid #909090;
         background-color: #a6a6a6;
-        padding: 5px;
+        padding-bottom: 30px;
         min-width: 200px;
         -ms-flex: 3 0 auto;
         -webkit-flex: 3 0 auto;
@@ -92,3 +91,8 @@ div[role=main] {
     #backlogForm input {
         float: right;
     }
+
+.deleteIssue {
+    float: right;
+    padding: 5px;
+}
